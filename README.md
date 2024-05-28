@@ -12,6 +12,8 @@ Library for displaying PDF documents on Android, with `animations`, `gestures`, 
 It is based on [PdfiumAndroid](https://github.com/barteksc/PdfiumAndroid) for decoding PDF files. Works on API 11 (Android 3.0) and higher.
 Licensed under Apache License 2.0.
 
+## What's new in 3.2.0-beta.2?
+
 ## What's new in 3.2.0-beta.1?
 * Merge PR #714 with optimized page load
 * Merge PR #776 with fix for max & min zoom level
