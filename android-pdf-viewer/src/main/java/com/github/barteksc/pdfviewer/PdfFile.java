@@ -16,6 +16,7 @@
 package com.github.barteksc.pdfviewer;
 
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.SparseBooleanArray;
@@ -319,6 +320,11 @@ public class PdfFile {
                                  RectF rect) {
         int docPage = documentPage(pageIndex);
         return pdfiumCore.mapRectToDevice(pdfDocument, docPage, startX, startY, sizeX, sizeY, 0, rect);
+    }
+
+    public Point mapDeviceCoordsToPage(int pageIndex, int startX, int startY, int sizeX, int sizeY, double pageX, double pageY) {
+        int docPage = documentPage(pageIndex);
+        return pdfiumCore.mapPageCoordsToDevice(pdfDocument, docPage, startX, startY, sizeX, sizeY, 0, pageX, pageY);
     }
 
     public void dispose() {
