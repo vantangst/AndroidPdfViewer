@@ -142,6 +142,7 @@ class DragPinchManager implements GestureDetector.OnGestureListener, GestureDete
         if (!pdfView.isDoubletapEnabled()) {
             return false;
         }
+
         if (pdfView.getZoom() < pdfView.getMidZoom()) {
             pdfView.zoomWithAnimation(e.getX(), e.getY(), pdfView.getMidZoom());
         } else if (pdfView.getZoom() < pdfView.getMaxZoom()) {
@@ -267,6 +268,9 @@ class DragPinchManager implements GestureDetector.OnGestureListener, GestureDete
             dr = maxZoom / pdfView.getZoom();
         }
         pdfView.zoomCenteredRelativeTo(dr, new PointF(detector.getFocusX(), detector.getFocusY()));
+        if (pdfView.getZoomHandle() != null) {
+            pdfView.getZoomHandle().onZoom(dr);
+        }
         return true;
     }
 
