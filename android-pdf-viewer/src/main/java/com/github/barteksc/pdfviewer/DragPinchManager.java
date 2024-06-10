@@ -268,6 +268,9 @@ class DragPinchManager implements GestureDetector.OnGestureListener, GestureDete
             dr = maxZoom / pdfView.getZoom();
         }
         pdfView.zoomCenteredRelativeTo(dr, new PointF(detector.getFocusX(), detector.getFocusY()));
+        if (pdfView.getZoomHandle() != null) {
+            pdfView.getZoomHandle().onZoom(dr);
+        }
         return true;
     }
 

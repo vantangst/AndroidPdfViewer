@@ -62,6 +62,7 @@ import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.github.barteksc.pdfviewer.util.MathUtils;
 import com.github.barteksc.pdfviewer.util.SnapEdge;
 import com.github.barteksc.pdfviewer.util.Util;
+import com.github.barteksc.pdfviewer.zoom.ZoomHandle;
 import com.shockwave.pdfium.PdfDocument;
 import com.shockwave.pdfium.PdfiumCore;
 import com.shockwave.pdfium.util.Size;
@@ -192,10 +193,16 @@ public class PDFView extends RelativeLayout {
 
     private ScrollHandle scrollHandle;
 
+    private ZoomHandle zoomHandle;
+
     private boolean isScrollHandleInit = false;
 
     ScrollHandle getScrollHandle() {
         return scrollHandle;
+    }
+
+    ZoomHandle getZoomHandle() {
+        return zoomHandle;
     }
 
     /**
@@ -443,6 +450,10 @@ public class PDFView extends RelativeLayout {
         isScrollHandleInit = false;
         currentXOffset = currentYOffset = 0;
         zoom = 1f;
+        if (zoomHandle != null) {
+            zoomHandle.onZoom(zoom);
+        }
+        zoomHandle = null;
         recycled = true;
         callbacks = new Callbacks();
         state = State.DEFAULT;
@@ -762,6 +773,9 @@ public class PDFView extends RelativeLayout {
         if (scrollHandle != null) {
             scrollHandle.setupLayout(this);
             isScrollHandleInit = true;
+        }
+        if (zoomHandle != null) {
+            zoomHandle.onZoom(zoom);
         }
 
         dragPinchManager.enable();
@@ -1137,6 +1151,10 @@ public class PDFView extends RelativeLayout {
         this.scrollHandle = scrollHandle;
     }
 
+    private void setZoomHandle(ZoomHandle zoomHandle) {
+        this.zoomHandle = zoomHandle;
+    }
+
     /**
      * Get page number at given offset
      *
@@ -1361,6 +1379,8 @@ public class PDFView extends RelativeLayout {
 
         private ScrollHandle scrollHandle = null;
 
+        private ZoomHandle zoomHandle = null;
+
         private boolean antialiasing = true;
 
         private int spacing = 0;
@@ -1476,6 +1496,11 @@ public class PDFView extends RelativeLayout {
             return this;
         }
 
+        public Configurator zoomHandle(ZoomHandle zoomHandle) {
+            this.zoomHandle = zoomHandle;
+            return this;
+        }
+
         public Configurator enableAntialiasing(boolean antialiasing) {
             this.antialiasing = antialiasing;
             return this;
@@ -1545,6 +1570,7 @@ public class PDFView extends RelativeLayout {
             PDFView.this.setSwipeVertical(!swipeHorizontal);
             PDFView.this.enableAnnotationRendering(annotationRendering);
             PDFView.this.setScrollHandle(scrollHandle);
+            PDFView.this.setZoomHandle(zoomHandle);
             PDFView.this.enableAntialiasing(antialiasing);
             PDFView.this.setSpacing(spacing);
             PDFView.this.setAutoSpacing(autoSpacing);
