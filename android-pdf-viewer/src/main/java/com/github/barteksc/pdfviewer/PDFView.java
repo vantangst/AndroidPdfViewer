@@ -1042,6 +1042,9 @@ public class PDFView extends RelativeLayout {
      */
     public void zoomTo(float zoom) {
         this.zoom = zoom;
+        if (zoomHandle != null) {
+            zoomHandle.onZoom(zoom);
+        }
     }
 
     /**
@@ -1141,10 +1144,16 @@ public class PDFView extends RelativeLayout {
 
     public void zoomWithAnimation(float centerX, float centerY, float scale) {
         animationManager.startZoomAnimation(centerX, centerY, zoom, scale);
+        if (zoomHandle != null) {
+            zoomHandle.onZoom(scale);
+        }
     }
 
     public void zoomWithAnimation(float scale) {
         animationManager.startZoomAnimation(getWidth() / 2, getHeight() / 2, zoom, scale);
+        if (zoomHandle != null) {
+            zoomHandle.onZoom(scale);
+        }
     }
 
     private void setScrollHandle(ScrollHandle scrollHandle) {
